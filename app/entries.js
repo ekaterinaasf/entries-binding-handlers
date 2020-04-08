@@ -81,19 +81,33 @@ const entries = {
     });
   },
   handleFind: function (displayId, valueId) {
-    debugger; // this one works
+    debugger;
     // render only the first entry with the given value
     const value = document.getElementById(valueId).value;
     const displayEl = document.getElementById(displayId);
-    const newEntry = this.find(value); //return { [key]: this.state[key] }
+    //const newEntry = this.find(value); //return { [key]: this.state[key] }
+    //const rez = this.renderEntry(newEntry[key]);
+    //const key = Object.keys(this.entries.state)[Object.values(this.entries.state).indexOf(value)];
+    //const found = this.state.find(value);
+    const key = Object.keys(this.state).find(
+      (key) => this.state[key] === value
+    ); //find key name by its value
+    const newEntry = this.renderEntry(key);
+    displayEl.innerHTML = "";
+    displayEl.innerHTML = "<ul>\n <li>" + newEntry + "\n</li>\n</ul>";
+    this.log.push({
+      handler: "find",
+      newEntry,
+      newState: JSON.parse(JSON.stringify(this.state)),
+    });
   },
   handleRemove: function (displayId, keyId) {
-    debugger; // this one works
+    debugger;
     const key = document.getElementById(keyId).value;
     this.remove(key);
     const newList = this.renderEntries();
     const displayEl = document.getElementById(displayId);
-    //displayEl.innerHTML = "";
+    displayEl.innerHTML = "";
     displayEl.innerHTML = newList;
     this.log.push({
       handler: "remove",
@@ -102,8 +116,16 @@ const entries = {
     });
   },
   handleViewAll: function (displayId) {
-    // render all entries
+    debugger; // render all entries
     const displayEl = document.getElementById(displayId);
+    const newList = this.renderEntries();
+    displayEl.innerHTML = "";
+    displayEl.innerHTML = newList;
+    this.log.push({
+      handler: "display all",
+      newList,
+      newState: JSON.parse(JSON.stringify(this.state)),
+    });
   },
   handleReset: function (displayId) {
     debugger; // this one works
@@ -118,7 +140,7 @@ const entries = {
 
   // initialization method (it works!)
   init: function () {
-    debugger;
+    //debugger;
     this.log.push({
       initialState: JSON.parse(JSON.stringify(this.state)),
     });
